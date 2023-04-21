@@ -1,0 +1,84 @@
+{% extends 'online_pharmacy/main_template.html' %}
+{% load static %}
+
+{% block extrastyle %}
+
+
+<style>
+    	*{
+         padding: 0;
+         margin: 0;
+         box-sizing: border-box;
+     }
+
+
+
+        img{
+            border-top-left-radius: 30px
+            border-bottom-left-radius: 30px;
+         }
+         .row{
+            background: white;
+            padding-top: 50px;
+            margin-top:-30px;
+            margin-bottom:-40px;
+            padding-bottom:75px;
+
+            border-radius: 30px;
+            box-shadow: 12px 12px 20px grey;
+        }
+        .price{
+        background: #2f323a;
+        }
+</style>
+    {% endblock %}
+
+
+
+{% block content %}
+
+  <h4 style="color:#33cc33" justify="center">  </h4>
+<br>
+<br>
+
+<section class="container-fluid col-lg-11">
+
+		<div class="row no-gutters">
+
+                <div class="col-lg-5 ">
+
+                    <img src="{{product.image.url}}" width="100%" height="100%" class="img-fluid" alt="">
+                </div>
+
+         <div class="col-lg-6 ">
+
+ <div class="container">
+
+<h1 style="color=#2f323a" >{{product.brand_name}}</h1>
+     <p>({{product.generic_name}}) </p>
+     <p> Manufacturer: {{product.manufacturer}} </p>
+     {% if in_stock %}<p style="color:green;font-size: 25px;">In Stock</p>{% else %}<p style="color:red;font-size: 25px;">Out Of stock</p>{% endif %}
+
+
+<h3 class="text-left">Rs. {{product.price|floatformat:0}}/-  </h3>
+<div class="p-2">
+           <button  onclick="add_cart({{product.id}},'{{product.imageURL}}','{{ product.brand_name}}',{{ product.price }},'{{in_stock}}' )" class="btn btn-outline-dark " style="margin: 0 300px" >Add to Cart </button>
+       </div>
+        </div>
+		 </div>
+        </div>
+		<br><br><br>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+
+
+<script>
+
+</script>
+
+
+  <!--- some scripts that apply to all pages -->
+{% endblock %}

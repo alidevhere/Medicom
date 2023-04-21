@@ -1,0 +1,39 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#2f323a">
+
+  <a class="navbar-brand" style="font-size: 30px;text-shadow: 2px 2px 4px #000000" href="{% url 'home_page' %}">Medicom</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a type="button" class="btn btn-outline-info" style="font-size: 18px;margin: 0 6px" href="{% url 'home_page' %}"> Home <span class="sr-only">(current)</span></a>
+      </li>
+      <!--
+
+      <li class="nav-item active">
+        <a type="button" class="btn btn-outline-info" style="font-size: 18px;margin: 0 6px" href="{% url 'store_page' %}"> Store <span class="sr-only">(current)</span></a>
+      </li>
+      -->
+      <li class="nav-item active">
+        <a type="button" class="btn btn-outline-info" style="font-size: 18px;margin: 0 6px" href="{% url 'about_us' %}"> About <span class="sr-only">(current)</span></a>
+      </li>
+
+    </ul>
+    <div class="form-inline my-2 my-lg-0">
+	     	<span class="hello-msg" style="font-size: 18px;color: #fff;margin-right: 20px;margin-top: 8px; color:white; " > <a style="color:white" href="{% url 'view_profile' %}" > {{user_name}} </a> </span>
+            <a href="/{{url}}" type="button" onclick="cleanCart( '{{btn_text}}' )" class="btn btn-outline-info" >{{btn_text}}</a>
+        <a href="{% url 'cart' %}" >
+	    		<img  id="cart-icon" src="{% static 'images/cart.png' %}" >
+	    	</a>
+	    	<p id="cart-total">0</p>
+
+	    </div>
+
+  </div>
+</nav>
+<br>
+

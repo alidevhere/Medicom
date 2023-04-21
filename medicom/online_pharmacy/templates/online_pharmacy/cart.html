@@ -1,0 +1,203 @@
+{% extends 'online_pharmacy/main_template.html' %}
+{% load static %}
+{% block content %}
+
+
+<h1><strong>CART</strong></h1>
+<div class="container">
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box-element">
+            {% csrf_token %}
+            <a class="btn btn-outline-dark" href="{% url 'home_page' %}">&#x2190; Continue Shopping  </a>
+
+        <br>
+        <br>
+
+        <table class="table">
+            <tr>
+                <th id="items" ></th>
+                <th id="total" ></th>
+                <th> <a href="{% url 'checkout' %}" type="button" class="btn btn-outline-info">Checkout </a> </th>
+            </tr>
+            </table>
+
+    </div>
+        <br>
+        <br>
+
+        <div class="box-element" >
+                <div class="cart-row">
+                    <div style="flex:2"></div>
+                    <div style="flex:2"><strong>Item</strong></div>
+                    <div style="flex:1"><strong>Price</strong></div>
+                    <div style="flex:1"><strong>Quantity</strong></div>
+                    <div style="flex:1"><strong>Total</strong></div>
+                    <div style="flex:3"><strong>Prescription</strong></div>
+                </div>
+
+        <div id="cart_products">
+
+        </div>
+
+        </div>
+
+
+</div>
+</div>
+    </div>
+
+
+
+{% endblock content %}
+
+
+
+
+{% block scripts %}
+
+<script type ="text/javascript">
+display_cart();
+
+
+
+function addListeners()
+{
+console.log('function called ');
+products = sessionStorage.getItem('cart');
+//products = JSON.parse(products);
+for(p in products)
+{
+console.log(typeof p);
+
+if(p.prescription_required == 'True' || p.prescription_required == 'true'){
+
+document.querySelector("image_"+p.id).addEventListener("change",function(){
+
+const reader= new FileReader();
+reader.addEventListener("load",()=>{
+console.log("Called");
+console.log(reader.result);
+});
+});
+}//endif
+}//endfor
+
+//reader.readAsDataURL(this.files[0]);
+
+}
+
+
+function display_cart()
+{
+products = sessionStorage.getItem('cart');
+products = JSON.parse(products);
+products_area = document.getElementById('cart_products');
+products_area.innerHTML ="";
+
+
+//
+
+
+console.log(products);
+// HERE CHANGE ITTTT
+
+if(products != null)
+{
+
+if(Object.keys(products).length<=0  )
+{
+products_area.innerHTML ="<h3 style='flex:1;'>CART Empty !!  </h3>";
+}else{
+
+let qty=0;
+let total_bill=0;
+for (var key in products) {
+
+    if (products.hasOwnProperty(key)) {
+
+var bill = products[key].price * products[key].qty;
+total_bill += bill;
+qty += products[key].qty;
+console.log('presc==',products[key].prescription_required);
+
+elem="";
+// checking if prescripion is required for medicine or not
+if(products[key].prescription_required == 'True'||  products[key].prescription_required == 'true')
+{
+elem = "<div style='flex:3' ><strong style='color:red'>Required</strong></div>";
+
+}else{
+
+elem = "<div style='flex:3'></div>";
+}
+
+
+products_area.innerHTML +="<div class='cart-row'>"+
+" <div style='flex:2'><img class='row-image' src='"+products[key].img+"'></div>"+
+                        "<div style='flex:2'><strong>"+products[key].name+"</strong></div>"+
+                        "<div style='flex:1'><strong>"+products[key].price+"</strong></div>"+
+                        " <div style='flex:1'>"+
+                    "<p class='quantity'>"+products[key].qty+"</p>"+
+                    "<div class='quantity'>"+
+                        "<img onclick='increment("+products[key].id+")' class='chg-quantity update-cart' src='{% static 'images/arrow-up.png' %}'>"+
+                        "<img  onclick='decrement("+products[key].id+")' class='chg-quantity update-cart' src='{% static 'images/arrow-down.png' %}'>"+
+                    "</div> "+
+                        "</div>"+
+                        "<div style='flex:1'><strong>"+bill+"</strong></div>"+elem+
+                        "</div> ";
+
+    }
+}
+total = document.getElementById('total');
+total.innerHTML ="<h5>Total : <strong >"+ total_bill +"</strong> </h5>";
+
+items = document.getElementById('items');
+items.innerHTML ="<h5>Items : <strong >"+ qty +"</strong> </h5>";
+
+}
+
+}else{
+products_area.innerHTML ="<h3 style='flex:1;'>CART Empty !!  </h3>";
+
+}
+
+console.log('calling listebwejn');
+ addListeners();
+ }
+
+
+function increment(id){
+console.log(id);
+products = sessionStorage.getItem('cart');
+products = JSON.parse(products);
+products[id].qty +=1;
+sessionStorage.setItem('cart',JSON.stringify (products) );
+display_cart();
+update_header();
+
+
+}
+
+function decrement(id){
+
+console.log(id);
+products = sessionStorage.getItem('cart');
+products = JSON.parse(products);
+if(products[id].qty <= 1)
+{
+delete products[id];
+}else{
+products[id].qty -=1;
+}
+sessionStorage.setItem('cart',JSON.stringify (products) );
+display_cart();
+update_header();
+}
+
+
+
+</script>
+
+
+    {%  endblock scripts %}

@@ -1,0 +1,363 @@
+{% extends 'online_pharmacy/main_template.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+<div class="row">
+    <div class="col-lg-6">
+        <h3>Shipping Information</h3>
+            <div class="box-element" >
+                <form enctype="multipart/form-data" onsubmit="return checkout()" method="POST" action="" id="order_form"  name="myForm" >
+                    <!--{% csrf_token %}-->
+                    <div class="form-field" >
+                        <input required class="form-control" type="text" id ="name" name="name" placeholder="Name" >
+                    </div>
+                    <div class="form-field">
+                        <input required class="form-control" type="number" id ="phone" name="phoneNo" placeholder="03XX-XXXXXXXX" >
+                    </div>
+                    <div class="form-field">
+                        <input required class="form-control"  id="address" type="text" name="address" placeholder="Address..">
+                    </div>
+                    <div class="form-field">
+                        <input required class="form-control"  id="mail" type="email" name="email" placeholder="abc@xyz.com" >
+                    </div>
+                    
+                    <!-- dynamic upload prescription -->
+                    <div  id="presc-btns">
+                        <div class="cart-row">
+                            <div style="flex:3"><strong>Item</strong></div>
+                            <div style="flex:3"><strong>Prescription</strong></div>
+                        </div>
+                    </div>
+                    <!-- HIDDEN FILEDS FOR CART, USER INFO-->
+                    <input id="user_id" name="user_id" type="hidden" value="">
+                    <input id="cart" name="cart" type="hidden" value="" >
+
+                    <hr><!-- type="submit" -->
+                    <input  class="btn btn-success btn-block"  type="submit" value="Continue" >
+                </form>
+            </div>
+         <br><div class="box-element" id="payment-info">
+           <h6>Cash on delivery!</h6>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+            <div class="box-element" id="form-wrapper">
+                <div class="btn btn-outline-dark" >
+                    <a href="{% url 'cart' %}"  style="text-decoration: none; color: black; " onMouseOver="this.style.color='white'"
+   onMouseOut="this.style.color='black'"> &#x2190;Go to Cart</a>
+                </div>
+
+                <br><br>
+                <h4>Order Summary</h4>
+                <hr>
+                <br>
+                <div class="cart-row">
+                    <div style="flex:2"></div>
+                    <div style="flex:2"><strong>Item</strong></div>
+                    <div style="flex:1"><strong>Price</strong></div>
+                    <div style="flex:1"><strong>Quantity</strong></div>
+                </div>
+                <div class="container" id="cart_products">
+                </div>
+
+                <h5 id ='items'>Items: </h5>
+                <h5 id="total">Total: $</h5>
+            </div>
+    </div>
+</div>
+</div>
+
+
+
+{% endblock content %}
+
+
+
+
+{% block scripts %}
+<script type="text/javascript">
+
+
+
+fill_cart();
+function isCartEmpty()
+{
+    var cart = sessionStorage.getItem('cart');
+    if(cart == null){console.log('no cart found');return true;}
+    var cart_length = Object.keys(JSON.parse(cart)).length;
+    console.log(cart_length);    
+    if(cart_length<=0)
+        {
+            return true;
+        }else{
+
+            return false;
+        }
+}
+
+
+
+
+    function fill_cart()
+    {
+        
+    products = sessionStorage.getItem('cart');
+    products = JSON.parse(products);
+    products_area = document.getElementById('cart_products');
+    products_area.innerHTML ="";
+
+    total = document.getElementById('total');
+    total.innerHTML ="<h5>Total : <strong > Rs"+ 0 +"</strong> </h5>";
+
+    items = document.getElementById('items');
+    items.innerHTML ="<h5>Items : <strong >"+ 0 +"</strong> </h5>";
+
+    // saving user id in form 
+    document.getElementById("user_id").value = sessionStorage.getItem('user');
+    
+
+
+if(products != null )
+{
+
+if(Object.keys(products).length<=0)
+{
+    products_area.innerHTML ="<h3 style='flex:1;'>CART Empty !!  </h3>";
+}else{
+
+let qty=0;
+let total_bill=0;
+
+var cart={};
+
+for (var key in products) 
+{
+
+    if (products.hasOwnProperty(key)) {
+         
+// checking if prescripion is required for medicine or not
+if(products[key].prescription_required == 'True'||  products[key].prescription_required == 'true')
+{
+    var box = document.getElementById("presc-btns");
+    box.innerHTML += "<div class='cart-row'>"+
+                    "<div style='flex:3'><strong>"+products[key].name+"</strong></div>"+
+                    "<div style='flex:3'  ><strong><input  type='file' name='img_"+products[key].id+"')'> </strong></div>"+               
+                  "</div>";
+                    
+
+}
+
+
+                // adding cart info to form
+                
+                cart[products[key].id] = products[key].qty;
+
+                //document.getElementById('cart').value += " "+products[key].id+":"+products[key].qty;
+
+                var bill = products[key].price * products[key].qty;
+                total_bill += bill;
+                qty += products[key].qty;
+
+products_area.innerHTML +=
+                    "<div class='cart-row'>"+
+                        "<div style='flex:2'><img class='row-image' src='"+products[key].img+"'></div>"+
+                        "<div style='flex:2'><strong>"+products[key].name+"</strong></div>"+
+                        "<div style='flex:1'>Rs "+products[key].price+"</div>"+
+                        "<div style='flex:1'>"+products[key].qty+"</div>"+
+                    "</div>";
+                }
+    }
+
+    document.getElementById('cart').value = JSON.stringify(cart);
+
+total = document.getElementById('total');
+total.innerHTML ="<h5>Total : <strong > Rs "+ total_bill +"</strong> </h5>";
+
+    items = document.getElementById('items');
+    items.innerHTML ="<h5>Items : <strong >"+ qty+"</strong> </h5>";
+
+    }
+ }
+
+        }
+
+
+// this function checks the valid input of the user in the checkout field
+//   if all are filled the this returns TRUE otherwise False:-
+function validateForm()
+  {
+      var name_field = document.forms["myForm"]["name"].value;
+      var contact_field = document.forms["myForm"]["phoneNo"].value;
+      var address_field = document.forms["myForm"]["address"].value;
+      var email_field = document.forms["myForm"]["email"].value;
+
+      if (name_field == "")
+      {
+        swal("Invalid Information", "Please fill the 'Name' field!", "warning");
+        return false;
+      }
+      if (!(/^\d{11}$/.test(contact_field)))
+      {
+        swal("Invalid Information", "Phone no. must be 11 digit", "warning");
+        return false;
+      }
+      if (address_field == "")
+      {
+        swal("Invalid Information", "Please fill the 'Address' field!", "warning");
+        return false;
+      }
+      if (!(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email_field)))
+      {
+        swal("Invalid Information", "Please fill valid Email id!", "warning");
+        return false;
+      }
+      else
+      {
+          console.log('VALIDATIONS SUCCESSFULLY PASSED');
+        return true;
+      }
+  }
+
+
+
+  function checkout()
+{
+    //event.preventDefault();
+    console.log('functio called')
+    var user_id = sessionStorage.getItem('user');
+    var cart = sessionStorage.getItem('cart');
+    if(isCartEmpty())
+    {
+        event.preventDefault();
+        console.log('empty cart');
+        alert('ERROR : Please choose items first');
+        return false;
+    }
+
+    if(validateForm()&& user_id != null  )
+    {
+        swal("Order Placed!", ", Your Order is being processed!", "success");
+        sessionStorage.removeItem('cart');
+        fill_cart();
+        update_header();
+        console.log('Submitting Form');
+        //document.getElementById('order_form').submit();    
+        return true;
+    }else{
+        
+    console.log('Form submission failed');
+        alert('ERROR : Please login first');
+        return fasle;
+    }
+
+    //setTimeout(() => { console.log("World!"); }, 10000);
+    //return fasle;
+
+}
+
+
+
+
+
+/*      OTHER LOGIC USING JQUERY 
+function checkout()
+{
+
+var user_id = sessionStorage.getItem('user');
+var mail = document.getElementById('mail').value
+var name = document.getElementById('name').value
+var address = document.getElementById('address').value
+var phone = document.getElementById('phone').value
+
+// check for each field if empty or null..only if all fields are valid then below code should
+// execute
+
+if(validateForm()&& user_id != null )
+    {
+
+      if(sessionStorage.getItem('cart') != null)
+      {
+             let user = {'user_id': user_id  ,'name':name, 'phone':phone, 'address':address, 'mail':mail }
+            var cart_data = sessionStorage['cart'];
+            
+            
+            //=========  adding prescription files to data ====
+            
+            var fd = new FormData();
+            for(key in cart_data)
+                {
+                    if(cart_data[key].prescription_required == "True" || cart_data[key].prescription_required == "true")
+                    {
+                        // fetch file
+                        var files = $('#img_'+cart_data[key].id)[0].files;
+                        // check if file is selected or not
+                        if(files.length > 0 )
+                        {
+                                fd.append('img_'+cart_data[key].id,files[0]);
+                        }
+
+                    }
+                    
+                }
+
+            
+            
+
+            //=========  END  adding prescription files to data ====
+
+         cart_data = JSON.parse(cart_data);
+
+            let cart = {}
+
+            for(key in cart_data)
+                {
+                    cart[cart_data[key].id] = cart_data[key].qty;
+
+                }
+
+			$.ajax({
+                                url: "/checkout/",
+                                type: "POST",
+                                data:{'cart': JSON.stringify(cart),'user':JSON.stringify(user),'prescriptions':fd },
+                                success: function(resp){
+
+                                console.log(resp['msg']);
+                                if(resp['success'] =='true')
+                                {
+                                     swal("Order Placed!", ", Your Order is being processed!", "success");
+                                     sessionStorage.removeItem('cart');
+                                     fill_cart();
+                                     update_header();
+
+                                }else{
+                                    swal("Error in placing order !!",resp['msg'], "error");
+
+                                }
+
+
+                                                        }
+                              });
+
+            console.log('SEnt data');
+
+
+		}else{
+		            swal("Cart Empty !!", "Please Fill your cart First!", "error");
+		}
+}else{
+  swal("Invalid Account !!", "Please Login First!", "error");
+
+}
+
+}
+*/
+
+
+
+
+
+
+</script>
+
+{% endblock %}

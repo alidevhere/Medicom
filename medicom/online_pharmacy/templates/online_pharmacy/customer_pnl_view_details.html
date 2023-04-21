@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Detail</title>
+</head>
+<body>
+
+</body>
+</html>
+
+
+
+
+
+
+{% extends 'online_pharmacy/customer_panel.html' %}
+
+{% block extrastyle %}
+
+{% endblock %}
+
+{% block content %}
+<h5><strong>Order ID : </strong><strong>{{order.id}}</strong></h5></br>
+<h5><strong>Customer's Name : </strong><strong>{{order.customer.name}}</strong></h5>
+<h5><strong>Receiver's Name : </strong><strong>{{delivery.deliver_name}}</strong></h5>
+<h5><strong>Delivery Address : </strong><strong>{{delivery.deliver_addr}}</strong></h5>
+<h5><strong>Delivery Contact : </strong><strong>{{delivery.deliver_phn}}</strong></h5>
+<h5><strong>Order Date : </strong><strong>{{order.order_date}}</strong></h5>
+{% if  delivery.deliver_date %}
+<h5><strong>Delivery Date : </strong><strong>{{delivery.deliver_date}}</strong></h5>
+{% endif %}
+</br></br>
+<table class="table table-hover table-bordered table-dark">
+  <thead>
+    <tr>
+      <th scope="col">Product Name</th>
+      <th scope="col">Unit Price</th>
+      <th scope="col">Quantity</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for i in items %}
+
+<tr>
+    <td>{{ i.product.brand_name }}</td>
+    <td>{{ i.product.price }}</td>
+    <td>{{ i.quantity }}</td>
+</tr>
+
+{% endfor %}
+  </tbody>
+</table>
+</br></br>
+
+<h5><strong>Total Amount : </strong><strong>{{order.amount}}</strong></h5>
+
+{% endblock %}
+
+
+

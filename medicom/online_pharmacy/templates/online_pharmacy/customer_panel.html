@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+{% load static %}
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,
+        maximum-scale=1.0,minimum-scale=1.0">
+        <title>My Profile</title>
+
+<!-- MY ADDDED -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<!-- END MY ADDDED -->
+
+        <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+        <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="{% static 'js/main.js' %}"></script>
+        <style>
+
+
+            h1,.lead { text-align: center; }
+            h1 { margin-top: 150px; }
+
+        .logout_btn{
+  padding: 5px;
+  background: #19B3D3;
+  text-decoration: none;
+  float: right;
+  margin-top: -30px;
+  margin-right: 40px;
+  border-radius: 2px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  transition: 0.5s;
+  transition-property: background;
+}
+
+.logout_btn:hover{
+  background: #0B87A6;
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.hello-msg{
+    font-size: 18px;
+    color: #fff;
+    margin-right: 20px;
+    text-align: center;
+    margin-top: -30px;
+    margin-right: 40px;
+
+}
+
+.hello-msg:hover, .hello-msg:active {text-decoration: underline; cursor: pointer;}
+
+
+
+		</style>
+{% block extrastyle %}
+
+  {% endblock %}
+
+</head>
+    <body>
+        <header  style ="top: 0px;" >
+            <span class="hello-msg" style="color:white;">{{name}} </span>
+            <span id="button-menu" class="fa fa-bars"></span>
+			<div class="right_area">
+        <a href="{% url 'logout' %}" class="logout_btn">Logout</a>
+      </div>
+            <nav class="navegacion">
+                <ul class="menu">
+                    <!--titular-->
+                    <li class="title-menu">Customer Panel</li>
+                    
+                   <!--titular
+ <li><a href="{% url 'customer_dashboard' %}"><span class="fa fa-fw fa-home icon-menu"></span>Home</a><li>
+  -->                  
+  <li><a href="{% url 'home_page' %}"><span class="fa fa-fw fa-shopping-bag icon-menu"></span>Shop</a><li>
+                    <li><a href="{% url 'view_profile' %}"><span class="fa fa-fw fa-user icon-menu"></span>My Profile</a><li>
+                    <li><a href="{% url 'track_my_orders' %}"><span class="fa fa-fw fa-truck icon-menu"></span>Track My Order</a><li>
+                    <li><a href="{% url 'my_orders' %}"><span class="fa fa-fw fa-history icon-menu"></span>Orders History</a><li>
+                    <li><a href="{% url 'about_us' %}"><span class="fa fa-fw fa-question icon-menu"></span>Help</a><li>
+                </li>
+                </ul>
+            </nav>
+        </header>
+
+
+
+
+<div class="container" style="padding-top: 90px;padding-right: 50px;padding-bottom: 50px;padding-left: 50px;">
+{% block content %}
+
+    {% endblock %}
+
+  </div>
+
+
+    </body>
+
+
+<!-- MY ADDDED -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <!-- END MY ADDDED -->
+
+
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-36251023-1']);
+  _gaq.push(['_setDomainName', 'jqueryscript.net']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+{% block scripts %}
+
+{% endblock %}
+
+
+</html>

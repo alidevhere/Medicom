@@ -1,0 +1,244 @@
+
+<!DOCTYPE html>
+
+<html lang="en-us" >
+<head>
+<title>Welcome to Medicom Admin Panel | Medicom</title>
+<link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">
+
+  <link rel="stylesheet" type="text/css" href="/static/admin/css/nav_sidebar.css">
+  <script src="/static/admin/js/nav_sidebar.js" defer></script>
+
+
+<style>
+    #div{
+    display : inline-block;
+    }
+
+    #content{
+    display : block;
+
+    }
+
+.colMS {
+    margin-right: 0px;
+    }
+
+</style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="/static/admin/css/dashboard.css">
+
+
+
+
+
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css">
+
+
+<meta name="robots" content="NONE,NOARCHIVE">
+</head>
+
+
+<body class=""
+  data-admin-utc-offset="0">
+
+<!-- Container -->
+<div id="container">
+
+
+    <!-- Header -->
+    <div id="header">
+        <div id="branding">
+<h1 id="site-name"><a href="/admin/">Medicom</a></h1>
+        </div>
+        <div id="user-tools">
+                Welcome,
+                <strong>admin</strong>.
+                   <a href="/">View site</a> /
+                <a href="/admin/password_change/">Change password</a> /
+                <a href="/admin/logout/">Log out</a>
+        </div>
+    </div>
+    <!-- END Header -->
+
+    <div class="main shifted" id="main">
+<button class="sticky toggle-nav-sidebar" id="toggle-nav-sidebar" aria-label="Toggle navigation"></button>
+<nav class="sticky" id="nav-sidebar">
+    <div class="app-online_pharmacy module">
+      <table>
+        <!--Appending to applist  -->
+        <tr class="model-customer" style="background: #fff;">
+                <th scope="row"><a href="/admin/" tabindex="0">Dash Board</a></th>
+                <td></td>
+        </tr>
+          <tr class="model-customer">
+              <th scope="row"><a href="/admin/online_pharmacy/customer/">Customers</a></th>
+              <td></td>
+          </tr>
+          <tr class="model-order">
+              <th scope="row"><a href="/admin/online_pharmacy/order/">Orders</a></th>
+              <td></td>
+          </tr>
+          <tr class="model-products">
+              <th scope="row"><a href="/admin/online_pharmacy/products/">Products</a></th>
+              <td><a href="/admin/online_pharmacy/products/add/" class="addlink">Add</a></td>
+          </tr>
+
+          <tr class="model-requested_order">
+            <th scope="row"><a href="/admin/online_pharmacy/requested_order/">Requested Orders</a></th>
+            <td></td>
+        </tr>
+          <tr class="model-stock">
+              <th scope="row"><a href="/admin/online_pharmacy/stock/">Stocks</a></th>
+              <td><a href="/admin/online_pharmacy/stock/add/" class="addlink">Add</a></td>
+          </tr>
+ <!-- Appending  Notifications Page link to side bar--
+          <tr class="model-customer" style="background: #fff;">
+                <th scope="row"><a href="/admin/" tabindex="0">Notifications</a></th>
+                <td></td>
+        </tr>
+  END notifications -->
+
+      </table>
+ </div>
+<table>
+</table>
+</nav>
+      <div class="content">
+        <!-- Content -->
+        <div id="content" class="colM">
+
+          <!--
+           #    title removed
+           <h1>Welcome to Medicom Admin Panel</h1>-->
+
+<div class="row" >
+    <div class="col-lg-3" style="display:inline-block;">
+            <div id="new_orders" class="card text-white bg-secondary mb-3" style="max-width: 18rem;max-height:15rem; min-height:10rem;float:left;">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>New Orders</strong> </h5>
+                    <p class="card-text" id="new_order_count"><strong>{{new_order_count}}</strong></p>
+                </div>
+            </div>
+    </div>
+
+    <div class="col-lg-3" style="display:inline-block;">
+          <div id="pending-orders" class="card text-white bg-info mb-3" style="max-width: 18rem;max-height:15rem; min-height:10rem;float:left;">
+              <div class="card-body">
+                    <h5 class="card-title"><strong>In Process Orders</strong> </h5>
+                    <p class="card-text" id="in_process_order_count"><strong>{{in_process_order_count}}</strong></p>
+                </div>
+          </div>
+    </div>
+
+
+    <div class="col-lg-3" style="display:inline-block;">
+        <div  class="card text-black bg-light mb-3" style="max-width: 18rem;max-height:15rem; min-height:10rem;float:left;">
+            <div class="card-body">
+            <h5 class="card-title"><strong>Delivering Orders</strong> </h5>
+                    <p class="card-text" id="delivering_order_count"><strong>{{delivering_order_count}}</strong></p>
+            </div>
+            </div>
+    </div>
+
+
+
+    <div class="col-lg-3" style="display:inline-block;">
+        <div id="completed_orders" class="card text-black bg-light mb-3" style="max-width: 18rem;max-height:15rem; min-height:10rem;float:left;">
+            <div class="card-body">
+            <h5 class="card-title"><strong>Completed Orders</strong> </h5>
+                    <p class="card-text" id="completed_order_count"><strong>{{completed_order_count}}</strong></p>
+            </div>
+            </div>
+    </div>
+
+    <div class="col-lg-12" style="display:inline-block;">
+        <div id="today_sales" class="card text-white bg-dark mb-3" style="max-width: 18rem;max-height:15rem; min-height:10rem;float:left;">
+            <div class="card-body">
+
+            <h5 class="card-title"><strong>Today's Sales</strong> </h5>
+            <p class="card-text"><strong>Rs {{today_sale}}</strong></p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!--        CHART        -->
+<script src="https://cdn.anychart.com/releases/8.0.0/js/anychart-base.min.js"></script>
+<br>
+<hr>
+<br>
+<div class="row-xlg-12" style="display:block; height:500px;">
+<div class="col-xlg-12" style="display:block;height:500px;">
+<div id="mychart" style="width: 100%; height: 100%"></div>
+</div>
+</div>
+
+    <script>
+      anychart.onDocumentReady(function() {
+
+        // set the data
+        var data = {
+            header: ["Days", "Sales"],
+            rows: {{weekly_sales|safe}}};
+
+
+            /*
+            [
+              ["Monday", 1500],
+              ["Tuesday", 87000],
+              ["Wednesday", 175000],
+              ["Thursday", 10000],
+              ["Friday", 242000],
+              ["Saturday", 25000],
+              ["Sunday", 50000]
+        ]
+            */
+
+        // create the chart
+        var chart = anychart.column();
+
+        // add the data
+        chart.data(data);
+
+        // set the chart title
+        chart.title("Weekly Sales");
+
+        // draw
+        chart.container("mychart");
+        chart.draw();
+      });
+
+// --------------  CARDS ----------
+
+//var order=document.getElementById("new_orders")
+
+  //order.innerHTML = '<div class="card-body" >'+
+   //'<h5 class="card-title"><strong>New Orders</strong></h5>'
+    //+'<p class="card-text">0</p>'
+     //   +'</div>'
+
+// -------   CARDS   -----------
+    </script>
+
+<!--       END CHART        -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+          <br class="clear">
+        </div>
+        <!-- END Content -->
+        <div id="footer"></div>
+      </div>
+    </div>
+</div>
+<!-- END Container -->
+</body>
+</html>

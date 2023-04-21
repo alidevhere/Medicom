@@ -1,0 +1,47 @@
+<title>Active Orders</title>
+{% extends 'online_pharmacy/customer_panel.html' %}
+
+{% block extrastyle %}
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="d-flex justify-content-center"> <h4><span>Active Orders</span> </h4> </div>
+
+<table class="table table-hover table-bordered table-dark table-striped">
+
+  <thead>
+    <tr>
+      <th scope="col">Delivery ID</th>
+        <th scope="col">Delivery Address</th>
+      <th scope="col">Delivery Phone No</th>
+      <th scope="col">Receiver Name</th>
+      <th scope="col">Delivery Status</th>
+      <th scope="col">Delivery Details</th>
+
+
+    </tr>
+  </thead>
+
+  <tbody>
+ {% if d %}
+    {% for i in d %}
+      <tr>
+        <td>{{i.order.id}}</td>
+        <td>{{i.deliver_addr}}</td>
+        <td>{{i.deliver_phn}}</td>
+        <td>{{i.deliver_name}}</td>
+        <td>{{i.deliver_status}}</td>
+        <td> <a type="button" class="btn btn-outline-info" style="font-size: 18px;margin: 0 6px" href="/user_panel/track_my_orders/{{i.order.id}}"> View Details <span class="sr-only">(current)</span></a></td>
+
+      </tr>
+    {% endfor %}
+    {% endif %}
+  </tbody>
+</table>
+
+
+
+{% endblock %}

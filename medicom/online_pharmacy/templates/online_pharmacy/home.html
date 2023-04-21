@@ -1,0 +1,44 @@
+{% extends 'online_pharmacy/main_template.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container mb-3">
+        <form class="form-row"> <!--inline my-2 my-lg-0 -->
+        <div class="col-12">
+          <input id="search-field"  class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+         </div>
+        </form>
+</div>
+
+<div class="container"  >
+<div class="row" id="product_space">
+
+    {% for product,in_stock in products %}
+    <div class="col-lg-4"  >
+        <img class="thumbnail" src="{{product.imageURL}}">
+            <div class="box-element product" >
+                <h6><strong>{{ product.brand_name}} </strong> {% if in_stock %}<p style="color:green">In Stock</p>{% else %}<p style="color:red">Out Of stock</p>{% endif %} </h6>
+                <hr>
+                        <button  onclick="add_cart({{product.id}},'{{product.imageURL}}','{{ product.brand_name}}',{{ product.price }},'{{in_stock}}','{{ product.prescription_required }}' )" class="btn btn-outline-dark" style="margin: 0 2px" >Add to Cart </button>
+                        <a type="button" class="btn btn-outline-info" style="font-size: 15px;margin: 0 2px" href="view_details/{{product.id}}/"> View Details <span class="sr-only">(current)</span></a>
+
+        <h6 style="display:inline-block; float: right;">Rs.{{product.price|floatformat:0 }}</h6>
+            </div>
+    </div>
+    {% endfor %}
+</div>
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+<script>
+
+
+
+</script>
+
+{% endblock %}
+
+

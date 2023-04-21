@@ -1,0 +1,51 @@
+<title>Orders History</title>
+{% extends 'online_pharmacy/customer_panel.html' %}
+
+{% block extrastyle %}
+
+{% endblock %}
+
+{% block content %}
+<style>
+.success {
+  background: green;
+  color: white;
+}
+</style>
+
+<div class="d-flex justify-content-center"> <h4><span>Orders History</span> </h4> </div>
+
+<table class="table table-hover table-bordered table-dark">
+  <thead>
+    <tr>
+      <th scope="col" rowspan="2" data-valign="middle">Order ID</th>
+      <th scope="col" rowspan="2" data-valign="middle">Customer Name</th>
+      <th scope="col" rowspan="2" data-valign="middle">Order Date</th>
+      <th scope="col" data-cell-style="cellStyle" rowspan="2" data-valign="middle">Status</th>
+      <th scope="col" rowspan="2" data-valign="middle">Order Amount</th>
+      <th scope="col" rowspan="2" data-valign="middle">Total Items</th>
+    </tr>
+  <tr>
+        <th>View Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for data in table %}
+    {% for i in details %}
+      <tr>
+        <td>{{data.id}}</td>
+        <td>{{data.customer}}</td>
+        <td>{{data.order_date}}</td>
+        <td> Completed</td>
+        <td>{{data.amount}}</td>
+        <td>{{ i.quantity }}</td>
+        <td><p><a type="button" class="btn btn-outline-info" style="font-size: 18px;margin: 0 6px" href="/user_panel/my_orders/{{i.order.id}}"> View Details <span class="sr-only">(current)</span></a></p></td>
+
+      </tr>
+    {% endfor%}
+    {% endfor %}
+  </tbody>
+</table>
+
+
+{% endblock %}
