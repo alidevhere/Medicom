@@ -12,7 +12,7 @@ In only 3 steps you can run and test the project:
  Clone or download repository
 
  ```
-wget https://github.com/alidevhere/Medicom
+git clone https://github.com/alidevhere/Medicom
  
  ```
 
@@ -20,13 +20,53 @@ wget https://github.com/alidevhere/Medicom
 
  ```
 cd Medicom
-source medicom/venv/Scripts/activate
+source ./venv/Scripts/activate
  ```
 
 ### 3- Run Server:
+Run server
 
 ```
-cd medicom
-python manage.py runserver
+python medicom/manage.py runserver
+```
+
+OR
 
 ```
+python3 medicom/manage.py runserver
+
+```
+Server is running on port http://127.0.0.1:8000/
+
+
+## Admin Panel Login:
+Admin Panel Credentials are:
+
+UserName: ``` admin ```
+
+Password: ``` admin ```
+
+## Screenshots:
+
+## home Page
+![home Page](/screenShots/homepage.png)
+
+## Add to Cart
+![Add to Cart](/screenShots/addToCart.png)
+
+## Checkout
+![CheckOut](/screenShots/checkOut.png)
+
+
+## Admin Login
+![Admin Panel](/screenShots/AdminLogin.png)
+
+
+## Admin Panel
+![Admin Panel](/screenShots/AdminDashboard.png)
+
+## Admin Panel - Products 
+![Admin Panel](/screenShots/adminDashBoardProducts.png)
+
+## Admin Panel - Stocks of products 
+![Admin Panel](/screenShots/adminDashboardStocks.png)

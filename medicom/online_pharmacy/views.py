@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
 from django.core.files.storage import FileSystemStorage
 
+@transaction.atomic
 def request_product(request):
     is_ajax = request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
     
@@ -39,23 +40,26 @@ def get_search(request):
                 products.append( (prod,instock) )
             return JsonResponse({'products':products})
     else:
-            mail = request.session.get('customer_mail')
-            products = []
-            for p in Products.objects.all():
-                products.append((p, p.in_stock))
+        return homePage(request=request)
+            
 
-            if mail is not None:
-                name = f'Hello , { Customer.objects.only("name").get(email=mail) }'
-                url = 'logout/'
-                btn_text= 'Logout'
-                return render(request, 'online_pharmacy/home.html', {'products': products,'user_name': name, 'url':url, 'btn_text':btn_text})
-            else:
-                return render(request, 'online_pharmacy/home.html',
-                              {'products': products, 'user_name': ' ', 'url': 'login/', 'btn_text': 'Login'})
+def homePage(request):
+    mail = request.session.get('customer_mail')
+    products = []
+    for p in Products.objects.all():
+        products.append((p, p.in_stock))
+    if mail is not None:
+        name = f'Hello , { Customer.objects.only("name").get(email=mail) }'
+        url = 'logout/'
+        btn_text= 'Logout'
+        return render(request, 'online_pharmacy/home.html', {'products': products,'user_name': name, 'url':url, 'btn_text':btn_text})
+    else:
+        return render(request, 'online_pharmacy/home.html',
+                      {'products': products, 'user_name': ' ', 'url': 'login/', 'btn_text': 'Login'})
+ 
 
 
-
-
+@transaction.atomic
 def signup_page(request):
     if request.method == 'POST':
         name = request.POST['name'].strip()
@@ -69,7 +73,7 @@ def signup_page(request):
             obj = Customer(name=name, phone_no=phone, address=address, email=email,password=pwd1)
             obj.save()
             request.session['customer_mail'] = email
-            return redirect(request, 'home_page')
+            return homePage(request=request)
 
     return render(request, 'online_pharmacy/signup_page.html')
 
@@ -95,7 +99,7 @@ def login_page(request):
 def logout(request):
     request.session.clear()
     print('after logout   ',request.session.get('customer_mail'))
-    return redirect('home_page')
+    return homePage(request=request)
 
 
 def my_orders(request):
@@ -115,18 +119,6 @@ def my_orders(request):
         return redirect('login_page')
 
 
-def about_us(request):
-    mail = request.session.get('customer_mail')
-    if mail != None:
-        name = f'Hello , { Customer.objects.only("name").get(email=mail) }'
-        url = 'logout/'
-        btn_text= 'Logout'
-        return render(request, 'online_pharmacy/about_us.html', {'user_name': name, 'url':url, 'btn_text':btn_text})
-    else:
-        return render(request, 'online_pharmacy/about_us.html',
-                      {'user_name': ' ', 'url': 'login/', 'btn_text': 'Login'})
-
-    
 
 
 def store_page(request):
@@ -359,7 +351,7 @@ def checkout(request):
                                                     deliver_phn=request.POST['phoneNo'], deliver_name=request.POST['name'])
                     t_id_2 = transaction.savepoint()
                     transaction.savepoint_commit(t_id_2)
-                    return redirect('home_page')
+                    return homePage(request=request)
             except Exception as e:
                 transaction.savepoint_commit(t_id_1)
                 return HttpResponse(
@@ -383,16 +375,12 @@ def checkout(request):
     
 
 
-
+@transaction.atomic
 def updateItem(request):
 
     data = json.loads(request.data)
     productId = data['productId']
     action = data['action']
-
-    print('Action', action)
-    print('productId', productId)
-
     customer = request.user.customer
     product = Products.objects.get(id=productId)
     order, created = Order.objects.get_or_create(customer=customer, complete=False)
