@@ -1,7 +1,7 @@
 # Medicom
 ---
 
-### NOTE: It is my first project in python/django.Don't expect everthing to be working.
+#### NOTE: It was my first project in python/django. It was developed as semester project so, don't expect everthing to be working.
 
 # Installation:
 Installation is pretty straight forward, all dependencies are already included in repository.
